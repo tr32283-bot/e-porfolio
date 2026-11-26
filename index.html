@@ -1,0 +1,849 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio เว็บไซต์แสดงประวัติผลงานและกิจกรรมส่วนตัว">
+  <title>Portfolio | E-Porfolio</title>
+
+  <!-- Prompt font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #1769e0;
+      --primary-dark: #0d3f8f;
+      --primary-light: #eaf3ff;
+      --text: #19324a;
+      --muted: #60758a;
+      --white: #ffffff;
+      --background: #f5f9ff;
+      --border: #dce8f7;
+      --shadow: 0 12px 30px rgba(30, 94, 170, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 76px;
+    }
+
+    body {
+      font-family: "Prompt", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      position: relative;
+      font-weight: 500;
+      color: var(--text);
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 2px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--primary);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 1.7rem;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 85% 25%, rgba(23, 105, 224, 0.15), transparent 25rem),
+        linear-gradient(135deg, #ffffff 0%, #edf5ff 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      max-width: 720px;
+      font-size: clamp(2.5rem, 6vw, 4.7rem);
+      line-height: 1.12;
+      color: var(--primary-dark);
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero-text {
+      max-width: 650px;
+      margin: 22px 0 30px;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 10px 22px;
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      background: var(--primary);
+      color: var(--white);
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .button:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .button-outline {
+      background: var(--white);
+      color: var(--primary);
+    }
+
+    .button-outline:hover {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      border-color: var(--primary);
+    }
+
+    .profile-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .profile-card {
+      position: relative;
+      width: min(360px, 85%);
+      aspect-ratio: 1 / 1.08;
+      border: 12px solid var(--white);
+      border-radius: 42% 42% 28px 28px;
+      background: linear-gradient(145deg, #71aafa, #1769e0);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      width: 170%;
+      height: 45%;
+      left: -35%;
+      bottom: -12%;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.16);
+      transform: rotate(-8deg);
+    }
+
+    .profile-monogram {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      font-size: clamp(5rem, 16vw, 8rem);
+      font-weight: 700;
+      text-shadow: 0 10px 30px rgba(13, 63, 143, 0.24);
+    }
+
+    /* Sections */
+    section {
+      padding: 90px 0;
+    }
+
+    .section-heading {
+      max-width: 680px;
+      margin: 0 auto 42px;
+      text-align: center;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      line-height: 1.25;
+      color: var(--primary-dark);
+    }
+
+    .section-heading p {
+      margin-top: 12px;
+      color: var(--muted);
+    }
+
+    /* About */
+    .about {
+      background: var(--white);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .about-avatar {
+      min-height: 330px;
+      display: grid;
+      place-items: center;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(23, 105, 224, 0.9), rgba(80, 158, 255, 0.75)),
+        var(--primary-light);
+      color: var(--white);
+      font-size: 7rem;
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+
+    .about-content h3 {
+      margin-bottom: 14px;
+      font-size: 1.7rem;
+      color: var(--primary-dark);
+    }
+
+    .about-content p {
+      color: var(--muted);
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+      list-style: none;
+    }
+
+    .skill-list li {
+      padding: 7px 13px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 310px;
+      padding: 26px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--white);
+      box-shadow: 0 8px 24px rgba(43, 101, 165, 0.08);
+      transition: 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-7px);
+      border-color: #b9d3f6;
+      box-shadow: var(--shadow);
+    }
+
+    .project-icon {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+      border-radius: 14px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .project-card h3 {
+      margin-bottom: 8px;
+      color: var(--primary-dark);
+      font-size: 1.22rem;
+    }
+
+    .project-card p {
+      flex: 1;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .project-link {
+      margin-top: 20px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .project-link:hover {
+      color: var(--primary-dark);
+    }
+
+    /* Activities */
+    .activities {
+      background: var(--white);
+    }
+
+    .timeline {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .activity {
+      position: relative;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 24px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity:last-child {
+      border-bottom: 0;
+    }
+
+    .activity-year {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .activity h3 {
+      margin-bottom: 5px;
+      color: var(--primary-dark);
+    }
+
+    .activity p {
+      color: var(--muted);
+    }
+
+    /* Footer */
+    footer {
+      padding: 50px 0 24px;
+      background: var(--primary-dark);
+      color: var(--white);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .footer-brand {
+      margin-bottom: 8px;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .footer-description {
+      max-width: 520px;
+      color: #d9e8fa;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .contact-links a {
+      padding: 8px 13px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 9px;
+      transition: 0.2s ease;
+    }
+
+    .contact-links a:hover {
+      background: var(--white);
+      color: var(--primary-dark);
+    }
+
+    .copyright {
+      margin-top: 38px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.14);
+      text-align: center;
+      color: #bed4ed;
+      font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 70px 0;
+      }
+
+      .hero-content {
+        text-align: center;
+      }
+
+      .hero-text {
+        margin-inline: auto;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .profile-wrap {
+        margin-top: 12px;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        width: min(100% - 28px, 1120px);
+      }
+
+      .nav-inner {
+        height: 64px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 8px 14px 14px;
+        border-bottom: 1px solid var(--border);
+        background: var(--white);
+        box-shadow: 0 12px 20px rgba(30, 94, 170, 0.08);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 12px 8px;
+      }
+
+      .nav-links a::after {
+        display: none;
+      }
+
+      section {
+        padding: 68px 0;
+      }
+
+      .hero {
+        padding: 55px 0;
+      }
+
+      h1 {
+        font-size: 2.55rem;
+      }
+
+      .profile-card {
+        width: min(300px, 82%);
+      }
+
+      .about-grid {
+        gap: 30px;
+      }
+
+      .about-avatar {
+        min-height: 260px;
+        font-size: 5.5rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .activity {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-links {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar" aria-label="เมนูหลัก">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="กลับหน้าแรก">
+        My<span>Portfolio</span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-label="เปิดเมนู" aria-expanded="false">
+        ☰
+      </button>
+
+      <ul class="nav-links">
+        <li><a class="active" href="#home">หน้าแรก</a></li>
+        <li><a href="#about">แนะนำตัว</a></li>
+        <li><a href="#projects">ผลงาน</a></li>
+        <li><a href="#activities">กิจกรรม</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <span class="eyebrow">Portfolio ของฉัน</span>
+          <h1>สวัสดีครับ ผมคือ <span>นักพัฒนาเว็บไซต์</span></h1>
+          <p class="hero-text">
+            สนใจการพัฒนาเว็บไซต์ที่ใช้งานง่าย สวยงาม และตอบสนองได้ทุกอุปกรณ์
+            พร้อมเรียนรู้เทคโนโลยีใหม่ ๆ เพื่อสร้างผลงานที่มีคุณค่า
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#projects">ดูผลงานของฉัน</a>
+            <a class="button button-outline" href="https://github.com/tr32283-bot" target="_blank" rel="noopener noreferrer">
+              GitHub Profile
+            </a>
+          </div>
+        </div>
+
+        <div class="profile-wrap" aria-label="รูปแสดงตัวแทน">
+          <div class="profile-card">
+            <div class="profile-monogram">DEV</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="container">
+        <div class="section-heading">
+          <h2>แนะนำตัว</h2>
+          <p>ข้อมูลตัวอย่างสำหรับใช้เป็นต้นแบบ Portfolio</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-avatar" aria-label="อักษรย่อ">NP</div>
+
+          <div class="about-content">
+            <h3>สวัสดี! ฉันคือนักพัฒนาเว็บมือใหม่</h3>
+            <p>
+              ฉันสนใจการสร้างเว็บไซต์ที่มีดีไซน์ทันสมัย มีโครงสร้างชัดเจน
+              และใช้งานได้สะดวก ทั้งบนคอมพิวเตอร์และอุปกรณ์มือถือ
+              เป้าหมายของฉันคือพัฒนาทักษะด้าน HTML, CSS และ JavaScript
+              เพื่อสร้างสรรค์เว็บไซต์ที่ตอบโจทย์ผู้ใช้งาน
+            </p>
+
+            <ul class="skill-list" aria-label="ทักษะ">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+              <li>Responsive Design</li>
+              <li>Git &amp; GitHub</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <h2>ผลงานที่น่าสนใจ</h2>
+          <p>ตัวอย่างผลงานที่แสดงแนวทางการพัฒนาและออกแบบเว็บไซต์</p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="project-icon">01</div>
+            <h3>เว็บไซต์ Portfolio</h3>
+            <p>
+              เว็บไซต์แนะนำตัวที่พัฒนาด้วย HTML และ CSS
+              รองรับการแสดงผลทุกขนาดหน้าจอ
+            </p>
+            <a class="project-link" href="https://github.com/tr32283-bot/e-porfolio" target="_blank" rel="noopener noreferrer">
+              ดูบน GitHub →
+            </a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">02</div>
+            <h3>ระบบบันทึกรายรับรายจ่าย</h3>
+            <p>
+              ตัวอย่างเว็บแอปสำหรับจัดการรายรับรายจ่าย
+              พร้อมแสดงรายการและสรุปยอดด้วย JavaScript
+            </p>
+            <a class="project-link" href="https://github.com/tr32283-bot" target="_blank" rel="noopener noreferrer">
+              ดูผลงานบน GitHub →
+            </a>
+          </article>
+
+          <article class="project-card">
+            <div class="project-icon">03</div>
+            <h3>หน้าเว็บร้านค้าออนไลน์</h3>
+            <p>
+              การออกแบบหน้าแสดงสินค้า จัดหมวดหมู่
+              และปุ่มตัวอย่างสำหรับเพิ่มสินค้าในตะกร้า
+            </p>
+            <a class="project-link" href="https://github.com/tr32283-bot" target="_blank" rel="noopener noreferrer">
+              ดูผลงานบน GitHub →
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="activities" id="activities">
+      <div class="container">
+        <div class="section-heading">
+          <h2>กิจกรรมและประสบการณ์</h2>
+          <p>ประสบการณ์ตัวอย่างที่สามารถปรับแต่งให้ตรงกับข้อมูลจริง</p>
+        </div>
+
+        <div class="timeline">
+          <article class="activity">
+            <div class="activity-year">2026</div>
+            <div>
+              <h3>พัฒนาเว็บไซต์ Portfolio</h3>
+              <p>ศึกษาและฝึกเขียน HTML, CSS และ JavaScript เพื่อสร้างเว็บไซต์ส่วนตัว</p>
+            </div>
+          </article>
+
+          <article class="activity">
+            <div class="activity-year">2025</div>
+            <div>
+              <h3>เข้าร่วมกิจกรรมเรียนรู้เทคโนโลยี</h3>
+              <p>อบรมการใช้งาน Git และ GitHub เพื่อจัดการซอร์สโค้ดอย่างเป็นระบบ</p>
+            </div>
+          </article>
+
+          <article class="activity">
+            <div class="activity-year">2024</div>
+            <div>
+              <h3>เริ่มต้นเรียนเขียนเว็บไซต์</h3>
+              <p>ฝึกสร้างหน้าเว็บพื้นฐาน ทดลองจัดวางองค์ประกอบและตกแต่งด้วย CSS</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">ติดต่อฉัน</div>
+          <p class="footer-description">
+            สนใจร่วมพัฒนาผลงานหรือมีข้อเสนอแนะ ติดต่อได้ผ่านช่องทางด้านล่าง
+          </p>
+        </div>
+
+        <div class="contact-links">
+          <a href="mailto:example@email.com">อีเมล</a>
+          <a href="https://github.com/tr32283-bot" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+      </div>
+
+      <p class="copyright">
+        © <span id="current-year"></span> E-Porfolio | สร้างด้วย HTML, CSS และ JavaScript
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    const links = document.querySelectorAll(".nav-links a");
+    const sections = document.querySelectorAll("main section[id]");
+    const currentYear = document.querySelector("#current-year");
+
+    // เปิด/ปิดเมนูบนโทรศัพท์
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.setAttribute("aria-label", isOpen ? "ปิดเมนู" : "เปิดเมนู");
+    });
+
+    // ปิดเมนูเมื่อคลิกลิงก์
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", "เปิดเมนู");
+      });
+    });
+
+    // Highlight เมนูตามส่วนที่กำลังแสดง
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            links.forEach((link) => {
+              link.classList.toggle(
+                "active",
+                link.getAttribute("href") === `#${entry.target.id}`
+              );
+            });
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -50% 0px" }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // แสดงปีปัจจุบัน
+    currentYear.textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
